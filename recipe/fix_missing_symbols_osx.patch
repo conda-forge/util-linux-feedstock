@@ -1,0 +1,86 @@
+From 3854515ca11ffc68c6bbdd4e5673c7f7521f3043 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Mon, 25 Oct 2021 11:39:09 +0200
+Subject: [PATCH] build-sys: (hardlink) check for llistxattr and lgetxattr
+
+It seems check for sys/xattr.h is not enough. The header file exists
+on MacOS, but without these functions.
+
+Addresses: https://github.com/karelzak/util-linux/issues/1432
+Signed-off-by: Karel Zak <kzak@redhat.com>
+---
+ configure.ac          |  2 ++
+ misc-utils/hardlink.c | 15 ++++++++-------
+ 2 files changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index edd29cbb43..2469c97775 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -539,6 +539,8 @@ AC_CHECK_FUNCS([ \
+ 	inotify_init \
+ 	jrand48 \
+ 	lchown \
++	lgetxattr \
++	llistxattr \
+ 	llseek \
+ 	newlocale \
+ 	mempcpy \
+diff --git a/misc-utils/hardlink.c b/misc-utils/hardlink.c
+index a275f2c424..bf179859af 100644
+--- a/misc-utils/hardlink.c
++++ b/misc-utils/hardlink.c
+@@ -46,8 +46,9 @@
+ 
+ #include <regex.h>		/* regcomp(), regsearch() */
+ 
+-#ifdef HAVE_SYS_XATTR_H
+-# include <sys/xattr.h>		/* listxattr, getxattr */
++#if defined(HAVE_SYS_XATTR_H) && defined(HAVE_LLISTXATTR) && defined(HAVE_LGETXATTR)
++# include <sys/xattr.h>
++# define USE_XATTR 1
+ #endif
+ 
+ static int quiet;		/* don't print anything */
+@@ -322,7 +323,7 @@ static void print_stats(void)
+ 	jlog(JLOG_SUMMARY, "%-15s %zu", _("Files:"), stats.files);
+ 	jlog(JLOG_SUMMARY, _("%-15s %zu files"), _("Linked:"), stats.linked);
+ 
+-#ifdef HAVE_SYS_XATTR_H
++#ifdef USE_XATTR
+ 	jlog(JLOG_SUMMARY, _("%-15s %zu xattrs"), _("Compared:"),
+ 	     stats.xattr_comparisons);
+ #endif
+@@ -361,7 +362,7 @@ static int handle_interrupt(void)
+ 	return FALSE;
+ }
+ 
+-#ifdef HAVE_SYS_XATTR_H
++#ifdef USE_XATTR
+ 
+ /**
+  * llistxattr_or_die - Wrapper for llistxattr()
+@@ -546,12 +547,12 @@ static int file_xattrs_equal(const struct file *a, const struct file *b)
+ 	free(value_b);
+ 	return ret;
+ }
+-#else /* !HAVE_SYS_XATTR_H */
++#else /* !USE_XATTR */
+ static int file_xattrs_equal(const struct file *a, const struct file *b)
+ {
+ 	return TRUE;
+ }
+-#endif /* HAVE_SYS_XATTR_H */
++#endif /* USE_XATTR */
+ 
+ /**
+  * file_contents_equal - Compare contents of two files for equality
+@@ -918,7 +919,7 @@ static void __attribute__((__noreturn__)) usage(void)
+ 	fputs(_(" -p, --ignore-mode          ignore changes of file mode\n"), out);
+ 	fputs(_(" -o, --ignore-owner         ignore owner changes\n"), out);
+ 	fputs(_(" -t, --ignore-time          ignore timestamps (when testing for equality)\n"), out);
+-#ifdef HAVE_SYS_XATTR_H
++#ifdef USE_XATTR
+ 	fputs(_(" -X, --respect-xattrs       respect extended attributes\n"), out);
+ #endif
+ 	fputs(_(" -m, --maximize             maximize the hardlink count, remove the file with\n"

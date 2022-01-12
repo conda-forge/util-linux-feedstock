@@ -6,16 +6,18 @@ set -ex
 export CPPFLAGS="${CPPFLAGS} -DCLOCK_BOOTTIME=7 -DO_PATH=010000000"
 
 if [[ $target_platform == "osx-"* ]]; then
-  # does not build on macOS
+  # the following do not build on macOS
   # wall is already on macOS
   # uuid conflicts with ossp-uuid
-  OSX_ARGS = "--disable-ipcs \
-              --disable-ipcrm \
-              --disable-wall \
-              --disable-libmount \
-              --enable-libuuid"
+  OSX_ARGS="--disable-ipcs \
+            --disable-ipcrm \
+            --disable-wall \
+            --disable-libmount \
+            --enable-libuuid"
 
 fi
+
+autoreconf -vfi
 
 ./configure --prefix="${PREFIX}" \
             --disable-chfn-chsh  \

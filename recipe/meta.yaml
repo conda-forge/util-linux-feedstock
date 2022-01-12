@@ -10,7 +10,9 @@ package:
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_version }}.{{ minor_version }}/util-linux-{{ version }}.tar.xz
   sha256: 6a0764c1aae7fb607ef8a6dd2c0f6c47d5e5fd27aa08820abaad9ec14e28e9d9
-
+  patches:
+    - fix_missing_symbols_osx.patch  # [osx]
+    - dont_test_procutils_osx.patch  # [osx]
 build:
   number: 0
   skip: true  # [not unix]
@@ -21,11 +23,14 @@ requirements:
   build:
     - {{ compiler('c') }}
     - make
+    - libtool
+    - autoconf
   host:
     - python
     - zlib
     - ncurses
     - readline
+    - libuuid   # [osx]
   run:
     - python
     - zlib
@@ -34,7 +39,8 @@ requirements:
 
 test:
   commands:
-    - test -f "${PREFIX}/lib/libmount${SHLIB_EXT}"
+    - test -f "${PREFIX}/lib/libmount.so"  # [linux]
+    - test -f "${PREFIX}/bin/hexdump"
 
 about:
   home: https://en.wikipedia.org/wiki/Util-linux

@@ -1,0 +1,35 @@
+diff --git a/lib/Makemodule.am b/lib/Makemodule.am
+index 5d95b37ea..b080ea916 100644
+--- a/lib/Makemodule.am
++++ b/lib/Makemodule.am
+@@ -106,12 +106,14 @@ check_PROGRAMS += \
+ 	test_linux_version
+ endif
+ 
++if LINUX
+ if HAVE_OPENAT
+ if HAVE_DIRFD
+ check_PROGRAMS += test_procutils
+ check_PROGRAMS += test_path
+ endif
+ endif
++endif
+ 
+ test_caputils_SOURCES = lib/caputils.c
+ test_caputils_CFLAGS = $(AM_CFLAGS) -DTEST_PROGRAM_CAPUTILS
+@@ -142,6 +144,7 @@ test_colors_LDADD = $(LDADD) libtcolors.la
+ test_randutils_SOURCES = lib/randutils.c
+ test_randutils_CFLAGS = $(AM_CFLAGS) -DTEST_PROGRAM_RANDUTILS
+ 
++if LINUX
+ if HAVE_OPENAT
+ if HAVE_DIRFD
+ test_procutils_SOURCES = lib/procutils.c
+@@ -155,6 +158,7 @@ test_path_CFLAGS = $(AM_CFLAGS) -DTEST_PROGRAM_PATH
+ test_path_LDADD = $(LDADD)
+ endif
+ endif
++endif
+ 
+ if HAVE_PTY
+ check_PROGRAMS += test_pty
