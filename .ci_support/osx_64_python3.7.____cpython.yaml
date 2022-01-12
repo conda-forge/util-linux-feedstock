@@ -8,11 +8,15 @@ channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
+libuuid:
+- '2'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 ncurses:
 - '6.2'
 pin_run_as_build:
+  libuuid:
+    max_pin: x
   ncurses:
     max_pin: x.x
   python:

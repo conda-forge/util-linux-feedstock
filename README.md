@@ -9,7 +9,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/util-linux-feed
 
 Summary: A random collection of Linux utilities
 
-Development: https://github.com/karelzak/util-linux
+Development: https://github.com/util-linux/util-linux
 
 Current build status
 ====================
