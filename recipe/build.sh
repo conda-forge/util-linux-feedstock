@@ -5,6 +5,18 @@ set -ex
 # These defines (extracted from Linux sources) are only needed for CentOS 6.
 export CPPFLAGS="${CPPFLAGS} -DCLOCK_BOOTTIME=7 -DO_PATH=010000000"
 
+if [[ $target_platform == "osx-"* ]]; then
+  # does not build on macOS
+  # wall is already on macOS
+  # uuid conflicts with ossp-uuid
+  OSX_ARGS = "--disable-ipcs \
+              --disable-ipcrm \
+              --disable-wall \
+              --disable-libmount \
+              --enable-libuuid"
+
+fi
+
 ./configure --prefix="${PREFIX}" \
             --disable-chfn-chsh  \
             --disable-login      \
@@ -16,7 +28,9 @@ export CPPFLAGS="${CPPFLAGS} -DCLOCK_BOOTTIME=7 -DO_PATH=010000000"
             --without-systemd    \
             --disable-makeinstall-chown \
             --disable-makeinstall-setuid \
-            --without-systemdsystemunitdir
+            --without-systemdsystemunitdir \
+            $OSX_ARGS
+
 make -j ${CPU_COUNT}
 make check \
   TS_OPT_misc_setarch_known_fail=yes \

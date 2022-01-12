@@ -1,17 +1,19 @@
 {% set name = "util-linux" %}
-{% set version = "2.36" %}
+{% set version = "2.37.2" %}
+{% set major_version = version.split('.')[0] %}
+{% set minor_version = version.split('.')[1] %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ version }}/util-linux-{{ version }}.tar.xz
-  sha256: 9e4b1c67eb13b9b67feb32ae1dc0d50e08ce9e5d82e1cccd0ee771ad2fa9e0b1
+  url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_version }}.{{ minor_version }}/util-linux-{{ version }}.tar.xz
+  sha256: 6a0764c1aae7fb607ef8a6dd2c0f6c47d5e5fd27aa08820abaad9ec14e28e9d9
 
 build:
-  number: 1
-  skip: true  # [not linux]
+  number: 0
+  skip: true  # [not unix]
   run_exports:
     - {{ pin_subpackage('util-linux', max_pin='x.x') }}
 
@@ -32,7 +34,7 @@ requirements:
 
 test:
   commands:
-    - test -f "${PREFIX}/lib/libmount.so"
+    - test -f "${PREFIX}/lib/libmount${SHLIB_EXT}"
 
 about:
   home: https://en.wikipedia.org/wiki/Util-linux
@@ -40,8 +42,9 @@ about:
   license_family: GPL
   license_file: COPYING
   summary: A random collection of Linux utilities
-  dev_url: https://github.com/karelzak/util-linux
+  dev_url: https://github.com/util-linux/util-linux
 
 extra:
   recipe-maintainers:
     - scopatz
+    - wolfv
