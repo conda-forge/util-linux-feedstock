@@ -1,5 +1,5 @@
 {% set name = "util-linux" %}
-{% set version = "2.38" %}
+{% set version = "2.38.1" %}
 
 package:
   name: {{ name|lower }}
