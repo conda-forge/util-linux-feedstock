@@ -182,6 +182,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-util--linux-green.svg)](https://anaconda.org/conda-forge/util-linux) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/util-linux.svg)](https://anaconda.org/conda-forge/util-linux) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/util-linux.svg)](https://anaconda.org/conda-forge/util-linux) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/util-linux.svg)](https://anaconda.org/conda-forge/util-linux) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-util--linux--libs-green.svg)](https://anaconda.org/conda-forge/util-linux-libs) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/util-linux-libs.svg)](https://anaconda.org/conda-forge/util-linux-libs) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/util-linux-libs.svg)](https://anaconda.org/conda-forge/util-linux-libs) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/util-linux-libs.svg)](https://anaconda.org/conda-forge/util-linux-libs) |
 
 Installing util-linux
 =====================
@@ -192,10 +193,10 @@ Installing `util-linux` from the `conda-forge` channel can be achieved by adding
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `util-linux` can be installed with:
+Once the `conda-forge` channel has been enabled, `util-linux, util-linux-libs` can be installed with:
 
 ```
-conda install util-linux
+conda install util-linux util-linux-libs
 ```
 
 It is possible to list all of the versions of `util-linux` available on your platform with:
@@ -268,5 +269,6 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@mbargull](https://github.com/mbargull/)
 * [@scopatz](https://github.com/scopatz/)
 

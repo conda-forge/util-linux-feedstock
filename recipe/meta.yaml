@@ -1,8 +1,7 @@
-{% set name = "util-linux" %}
 {% set version = "2.36" %}
 
 package:
-  name: {{ name|lower }}
+  name: util-linux-split
   version: {{ version }}
 
 source:
@@ -12,8 +11,6 @@ source:
 build:
   number: 1
   skip: true  # [not linux]
-  run_exports:
-    - {{ pin_subpackage('util-linux', max_pin='x.x') }}
 
 requirements:
   build:
@@ -24,15 +21,74 @@ requirements:
     - zlib
     - ncurses
     - readline
-  run:
-    - python
-    - zlib
-    - ncurses
-    - readline
 
-test:
-  commands:
-    - test -f "${PREFIX}/lib/libmount.so"
+outputs:
+  - name: util-linux-libs
+    script: install-util-linux-libs.sh
+    build:
+      run_exports:
+        - {{ pin_subpackage('util-linux-libs', max_pin='x.x') }}
+    requirements:
+      build:
+        - make
+      host:
+      run:
+      run_constrained:
+        # TODO: Either split util-linux-libs into their separate libraries
+        #       or decide whether to use libuuid from util-linux or e2fsprogs
+        #       for the "libuuid" package. Also beware of macOS issue
+        #       https://github.com/conda-forge/libuuid-feedstock/issues/16 .
+        # The "libuuid" package also contains libuuid built from util-linux.
+        - libuuid <0a0
+    test:
+      commands:
+        - test -f "${PREFIX}/include/blkid/blkid.h"
+        - test -f "${PREFIX}/include/libfdisk/libfdisk.h"
+        - test -f "${PREFIX}/include/libmount/libmount.h"
+        - test -f "${PREFIX}/include/libsmartcols/libsmartcols.h"
+        - test -f "${PREFIX}/include/uuid/uuid.h"
+        - test -f "${PREFIX}/lib/libblkid${SHLIB_EXT}"
+        - test -f "${PREFIX}/lib/libfdisk${SHLIB_EXT}"
+        - test -f "${PREFIX}/lib/libmount${SHLIB_EXT}"
+        - test -f "${PREFIX}/lib/libsmartcols${SHLIB_EXT}"
+        - test -f "${PREFIX}/lib/libuuid${SHLIB_EXT}"
+        - test -f "${PREFIX}/lib/pkgconfig/blkid.pc"
+        - test -f "${PREFIX}/lib/pkgconfig/fdisk.pc"
+        - test -f "${PREFIX}/lib/pkgconfig/mount.pc"
+        - test -f "${PREFIX}/lib/pkgconfig/smartcols.pc"
+        - test -f "${PREFIX}/lib/pkgconfig/uuid.pc"
+        - test ! -d "${PREFIX}/bin"
+        - test ! -d "${PREFIX}/sbin"
+        - test ! -d "${PREFIX}/share"
+
+  - name: util-linux
+    script: install-util-linux.sh
+    build:
+      run_exports:
+        # This run_exports is just for compatibility until recipes use the
+        # util-linux-libs output directly.
+        - {{ pin_subpackage('util-linux-libs', max_pin='x.x') }}
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - make
+      host:
+        - {{ pin_subpackage('util-linux-libs', exact=True) }}
+        - python
+        - zlib
+        - ncurses
+        - readline
+      run:
+        - {{ pin_subpackage('util-linux-libs', exact=True) }}
+        - python
+        - zlib
+        - ncurses
+        - readline
+    test:
+      commands:
+        - '"${PREFIX}/bin/mount" --version'
+        - '"${PREFIX}/sbin/mkfs" --version'
+        - test -f "${PREFIX}/share/bash-completion/completions/mount"
 
 about:
   home: https://en.wikipedia.org/wiki/Util-linux
@@ -43,5 +99,7 @@ about:
   dev_url: https://github.com/karelzak/util-linux
 
 extra:
+  feedstock-name: util-linux
   recipe-maintainers:
     - scopatz
+    - mbargull
