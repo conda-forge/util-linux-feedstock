@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Get an updated config.sub and config.guess
+cp $BUILD_PREFIX/share/gnuconfig/config.* ./config
 set -ex
 
 # TODO: Remove the following once we update to CentOS 7.
@@ -18,7 +20,9 @@ export CPPFLAGS="${CPPFLAGS} -DCLOCK_BOOTTIME=7 -DO_PATH=010000000"
             --disable-makeinstall-setuid \
             --without-systemdsystemunitdir
 make -j ${CPU_COUNT}
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
 make check \
   TS_OPT_misc_setarch_known_fail=yes \
   TS_OPT_column_invalid_multibyte_known_fail=yes
+fi
 make install
