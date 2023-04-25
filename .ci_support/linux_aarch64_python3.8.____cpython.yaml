@@ -3,7 +3,7 @@ BUILD:
 c_compiler:
 - gcc
 c_compiler_version:
-- '10'
+- '12'
 cdt_arch:
 - aarch64
 cdt_name:
@@ -19,10 +19,6 @@ ncurses:
 pin_run_as_build:
   python:
     min_pin: x.x
-    max_pin: x.x
-  readline:
-    max_pin: x
-  zlib:
     max_pin: x.x
 python:
 - 3.8.* *_cpython
