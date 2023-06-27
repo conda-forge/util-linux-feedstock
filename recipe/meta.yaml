@@ -9,8 +9,6 @@ package:
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
   sha256: 890ae8ff810247bd19e274df76e8371d202cda01ad277681b0ea88eeaa00286b
-  patches:
-    - sys_vfs_h_osx.patch  # [osx]
 
 build:
   number: 0
