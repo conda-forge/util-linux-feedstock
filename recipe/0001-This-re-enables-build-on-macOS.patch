@@ -1,4 +1,4 @@
-From d75d85e5b3c709744fc5b94cc37756c5cff76546 Mon Sep 17 00:00:00 2001
+From f35f79c5050f95425774619813a8ba6018bf8f66 Mon Sep 17 00:00:00 2001
 From: Eugene Gershnik <gershnik@users.noreply.github.com>
 Date: Mon, 6 May 2024 09:29:39 -0700
 Subject: [PATCH 1/1] This re-enables build on macOS.
