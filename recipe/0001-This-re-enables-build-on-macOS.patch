@@ -1,7 +1,7 @@
 From a6184db76588ae4e6da8da2e2ba2c09a32253095 Mon Sep 17 00:00:00 2001
 From: Eugene Gershnik <gershnik@users.noreply.github.com>
 Date: Mon, 6 May 2024 09:29:39 -0700
-Subject: [PATCH 1/1] This re-enables build on macOS.
+Subject: [PATCH 1/2] This re-enables build on macOS.
 
 Weak aliases are not supported by clang on Darwin.
 Instead this fix uses inline asm to make `_uuid_time` and alias to `___uuid_time`

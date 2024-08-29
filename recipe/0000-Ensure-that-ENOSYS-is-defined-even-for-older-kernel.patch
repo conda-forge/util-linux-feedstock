@@ -1,7 +1,7 @@
 From b9b681ffe4de60aee4fd94777c6c827db479a4e2 Mon Sep 17 00:00:00 2001
 From: Mark Harfouche <mark.harfouche@gmail.com>
 Date: Wed, 28 Aug 2024 19:59:54 -0400
-Subject: [PATCH 0/1] Ensure that ENOSYS is defined even for older kernel
+Subject: [PATCH 0/2] Ensure that ENOSYS is defined even for older kernel
 
 ---
  misc-utils/lsfd.c          | 5 +++++
