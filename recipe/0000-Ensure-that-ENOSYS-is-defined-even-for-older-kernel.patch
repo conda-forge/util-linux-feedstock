@@ -1,20 +1,21 @@
-From 14ef18e488854625f021eff0142c25b971720575 Mon Sep 17 00:00:00 2001
+From c75225939b7ae28bb9e4929691d90d6eae28ee1f Mon Sep 17 00:00:00 2001
 From: Mark Harfouche <mark.harfouche@gmail.com>
 Date: Wed, 28 Aug 2024 19:59:54 -0400
 Subject: [PATCH 0/1] Ensure that ENOSYS is defined even for older kernel
 
 ---
- misc-utils/lsfd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ misc-utils/lsfd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/misc-utils/lsfd.c b/misc-utils/lsfd.c
-index 01e88d51b..13021b820 100644
+index 01e88d51b..845d9b3ee 100644
 --- a/misc-utils/lsfd.c
 +++ b/misc-utils/lsfd.c
-@@ -38,6 +38,10 @@
+@@ -38,6 +38,11 @@
  #include <linux/sched.h>
  #include <sys/syscall.h>
  
++#include <errno.h>
 +#ifndef ENOSYS
 +#define ENOSYS 38
 +#endif
