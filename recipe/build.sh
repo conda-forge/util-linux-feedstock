@@ -10,6 +10,7 @@ if [[ $target_platform == "osx-"* ]]; then
             --disable-ipcrm \
             --disable-wall \
             --disable-libmount \
+            --disable-liblastlog2 \
             --enable-libuuid"
 
 fi
