@@ -11,6 +11,9 @@ source:
   sha256: d78b37a66f5922d70edf3bdfb01a6b33d34ed3c3cafd6628203b2a2b67c8e8b3
   patches:
     - 0001-Ensure-that-ENOSYS-is-defined-even-for-older-kernel.patch
+    # https://github.com/util-linux/util-linux/issues/2873
+    # https://github.com/util-linux/util-linux/pull/3013
+    - 3013.patch
 
 build:
   number: 1
