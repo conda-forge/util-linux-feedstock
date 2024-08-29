@@ -1,0 +1,27 @@
+From 8a8537bd68be2e119d49919b9763ff8d37c73731 Mon Sep 17 00:00:00 2001
+From: Mark Harfouche <mark.harfouche@gmail.com>
+Date: Wed, 28 Aug 2024 19:59:54 -0400
+Subject: [PATCH 0/1] Ensure that ENOSYS is defined even for older kernel
+
+---
+ misc-utils/lsfd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/misc-utils/lsfd.c b/misc-utils/lsfd.c
+index 01e88d51b..8d12cb5ff 100644
+--- a/misc-utils/lsfd.c
++++ b/misc-utils/lsfd.c
+@@ -72,6 +72,10 @@ static int kcmp(pid_t pid1 __attribute__((__unused__)),
+  * Defined in linux/include/linux/sched.h private header file. */
+ #define PF_KTHREAD		0x00200000	/* I am a kernel thread */
+ 
++#ifndef ENOSYS
++#define ENOSYS 38
++#endif
++
+ #include "c.h"
+ #include "list.h"
+ #include "closestream.h"
+-- 
+2.43.0
+
