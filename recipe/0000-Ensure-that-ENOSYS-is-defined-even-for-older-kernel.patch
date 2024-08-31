@@ -1,0 +1,41 @@
+From b9b681ffe4de60aee4fd94777c6c827db479a4e2 Mon Sep 17 00:00:00 2001
+From: Mark Harfouche <mark.harfouche@gmail.com>
+Date: Wed, 28 Aug 2024 19:59:54 -0400
+Subject: [PATCH 0/2] Ensure that ENOSYS is defined even for older kernel
+
+---
+ misc-utils/lsfd.c          | 5 +++++
+ tests/helpers/test_mkfds.c | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/misc-utils/lsfd.c b/misc-utils/lsfd.c
+index 01e88d51b..845d9b3ee 100644
+--- a/misc-utils/lsfd.c
++++ b/misc-utils/lsfd.c
+@@ -38,6 +38,11 @@
+ #include <linux/sched.h>
+ #include <sys/syscall.h>
+ 
++#include <errno.h>
++#ifndef ENOSYS
++#define ENOSYS 38
++#endif
++
+ #ifdef HAVE_LINUX_KCMP_H
+ #  include <linux/kcmp.h>
+ static int kcmp(pid_t pid1, pid_t pid2, int type,
+diff --git a/tests/helpers/test_mkfds.c b/tests/helpers/test_mkfds.c
+index 4b138c2ef..b9a47c43e 100644
+--- a/tests/helpers/test_mkfds.c
++++ b/tests/helpers/test_mkfds.c
+@@ -72,6 +72,7 @@
+ #define EXIT_EPROTONOSUPPORT 20
+ #define EXIT_EACCES 21
+ #define EXIT_ENOENT 22
++#define EXIT_ENOSYS 23
+ 
+ #define _U_ __attribute__((__unused__))
+ 
+-- 
+2.43.0
+
