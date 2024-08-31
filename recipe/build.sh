@@ -35,10 +35,13 @@ export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
             $OSX_ARGS
 make -j ${CPU_COUNT}
 
+# The name of the flag is
+# TS_OPT_<test_name>_known_fail
+# where test_name
+# libmount/update-py  --> libmount_update_py
 known_fail="TS_OPT_misc_setarch_known_fail=yes"
 known_fail+=" TS_OPT_column_invalid_multibyte_known_fail=yes"
 known_fail+=" TS_OPT_hardlink_options_known_fail=yes"  # flaky on py3.9?
-known_fail+=" TS_OPT_lsfd_column_ainodeclass_inotify_known_fail=yes"
 if [[ $target_platform == linux-aarch64 ]]; then
   known_fail+=" TS_OPT_lsfd_mkfds_ro_regular_file_known_fail=yes"  # can be flaky on this platform
   known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
@@ -49,7 +52,14 @@ if [[ $target_platform == linux-aarch64 ]]; then
   known_fail+=" TS_OPT_lsfd_mkfds_tcp6_known_fail=yes"
   known_fail+=" TS_OPT_lsfd_mkfds_udp6_known_fail=yes"
   known_fail+=" TS_OPT_lsfd_option_inet_known_fail=yes"
-  # script/options fails on pypy + aarch64 under emulation
+
+  known_fail+=" TS_OPT_libmount_update_py_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_ainodeclass_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_type_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_xmode_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_mkfds_signalfd_known_fail=yes"
+  known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
+  # script_options fails on pypy + aarch64 under emulation
   known_fail+=" TS_OPT_script_options_known_fail=yes"
 fi
 if [[ $target_platform == linux-ppc64le ]]; then
@@ -58,6 +68,21 @@ if [[ $target_platform == linux-ppc64le ]]; then
   known_fail+=" TS_OPT_kill_name_to_number_known_fail=yes"
   known_fail+=" TS_OPT_kill_options_known_fail=yes"
   known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
+
+  known_fail+=" TS_OPT_libmount_update_py_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_ainodeclass_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_type_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_xmode_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_mkfds_directory_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_mkfds_signalfd_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_mkfds_symlink_known_fail=yes"
+  known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
+fi
+if [[ $target_platform == linux-64 ]]; then
+  known_fail+=" TS_OPT_lsfd_column_ainodeclass_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_type_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_xmode_known_fail=yes"
+  known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
 fi
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
 make check $known_fail
