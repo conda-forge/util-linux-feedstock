@@ -38,7 +38,7 @@ make -j ${CPU_COUNT}
 known_fail="TS_OPT_misc_setarch_known_fail=yes"
 known_fail+=" TS_OPT_column_invalid_multibyte_known_fail=yes"
 known_fail+=" TS_OPT_hardlink_options_known_fail=yes"  # flaky on py3.9?
-known_fail+=" TST_OPT_lsfd_column_ainodeclass_inotify_known_fail=yes"
+known_fail+=" TS_OPT_lsfd_column_ainodeclass_inotify_known_fail=yes"
 if [[ $target_platform == linux-aarch64 ]]; then
   known_fail+=" TS_OPT_lsfd_mkfds_ro_regular_file_known_fail=yes"  # can be flaky on this platform
   known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
