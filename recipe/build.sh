@@ -39,8 +39,7 @@ make -j ${CPU_COUNT}
 # TS_OPT_<test_name>_known_fail
 # where test_name
 # libmount/update-py  --> libmount_update_py
-known_fail="TS_OPT_misc_setarch_known_fail=yes"
-known_fail+=" TS_OPT_column_invalid_multibyte_known_fail=yes"
+known_fail=" TS_OPT_column_invalid_multibyte_known_fail=yes"
 known_fail+=" TS_OPT_hardlink_options_known_fail=yes"  # flaky on py3.9?
 if [[ $target_platform == linux-aarch64 ]]; then
   known_fail+=" TS_OPT_lsfd_mkfds_ro_regular_file_known_fail=yes"  # can be flaky on this platform
