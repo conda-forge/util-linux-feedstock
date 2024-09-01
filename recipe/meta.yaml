@@ -16,7 +16,7 @@ source:
     - 0001-This-re-enables-build-on-macOS.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [not unix]
   run_exports:
     - {{ pin_subpackage('util-linux', max_pin='x.x') }}
