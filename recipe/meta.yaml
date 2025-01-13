@@ -1,5 +1,5 @@
 {% set name = "util-linux" %}
-{% set version = "2.40.2" %}
+{% set version = "2.40.4" %}
 {% set major_minor = '.'.join(version.split('.')[:2]) %}
 
 package:
@@ -8,15 +8,16 @@ package:
 
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
-  sha256: d78b37a66f5922d70edf3bdfb01a6b33d34ed3c3cafd6628203b2a2b67c8e8b3
+  sha256: 5c1daf733b04e9859afdc3bd87cc481180ee0f88b5c0946b16fdec931975fb79
   patches:
-    - 0000-Ensure-that-ENOSYS-is-defined-even-for-older-kernel.patch
+    # https://github.com/util-linux/util-linux/pull/3361
+    - 0000-include-errno_dot_h.patch
     # https://github.com/util-linux/util-linux/issues/2873
     # https://github.com/util-linux/util-linux/pull/3013
     - 0001-This-re-enables-build-on-macOS.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [not unix]
   run_exports:
     - {{ pin_subpackage('util-linux', max_pin='x.x') }}
