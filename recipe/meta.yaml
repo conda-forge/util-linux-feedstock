@@ -10,6 +10,8 @@ source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
   sha256: 5c1daf733b04e9859afdc3bd87cc481180ee0f88b5c0946b16fdec931975fb79
   patches:
+    # https://github.com/util-linux/util-linux/pull/3361
+    - 0000-include-errno_dot_h.patch
     # https://github.com/util-linux/util-linux/issues/2873
     # https://github.com/util-linux/util-linux/pull/3013
     - 0001-This-re-enables-build-on-macOS.patch
