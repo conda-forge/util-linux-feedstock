@@ -9,12 +9,6 @@ package:
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
   sha256: be9ad9a276f4305ab7dd2f5225c8be1ff54352f565ff4dede9628c1aaa7dec57
-  patches:
-    # https://github.com/util-linux/util-linux/pull/3361
-    - 0000-include-errno_dot_h.patch
-    # https://github.com/util-linux/util-linux/issues/2873
-    # https://github.com/util-linux/util-linux/pull/3013
-    - 0001-This-re-enables-build-on-macOS.patch
 
 build:
   number: 0
