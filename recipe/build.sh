@@ -10,8 +10,7 @@ if [[ $target_platform == "osx-"* ]]; then
             --disable-ipcrm \
             --disable-wall \
             --disable-libmount \
-            --disable-liblastlog2 \
-            --enable-libuuid"
+            --disable-liblastlog2"
 
 fi
 
@@ -23,11 +22,11 @@ export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
             --disable-chfn-chsh  \
             --disable-login      \
             --disable-nologin    \
-            --disable-uuidd      \
             --disable-su         \
             --disable-setpriv    \
             --disable-runuser    \
             --disable-static     \
+            --disable-libuuid     \
             --without-systemd    \
             --disable-makeinstall-chown \
             --disable-makeinstall-setuid \
