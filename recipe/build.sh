@@ -26,7 +26,7 @@ export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
             --disable-setpriv    \
             --disable-runuser    \
             --disable-static     \
-            --disable-libuuid     \
+            --enable-libuuid     \
             --without-systemd    \
             --disable-makeinstall-chown \
             --disable-makeinstall-setuid \

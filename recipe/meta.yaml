@@ -1,9 +1,8 @@
-{% set name = "util-linux" %}
 {% set version = "2.41.1" %}
 {% set major_minor = '.'.join(version.split('.')[:2]) %}
 
 package:
-  name: {{ name|lower }}
+  name: util-linux
   version: {{ version }}
 
 source:
@@ -33,10 +32,11 @@ requirements:
     - zlib
     - ncurses
     - readline
-    - libuuid
+    - libuuid {{ version }}
     - libxcrypt  # [linux]
   run:
     - python
+    - libuuid {{ version }}
 
 test:
   commands:
