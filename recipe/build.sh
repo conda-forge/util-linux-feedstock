@@ -5,7 +5,6 @@ OSX_ARGS=""
 if [[ $target_platform == "osx-"* ]]; then
   # the following do not build on macOS
   # wall is already on macOS
-  # uuid conflicts with ossp-uuid
   OSX_ARGS="--disable-ipcs \
             --disable-ipcrm \
             --disable-wall \
