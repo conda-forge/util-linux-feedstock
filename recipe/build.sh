@@ -9,13 +9,14 @@ if [[ $target_platform == "osx-"* ]]; then
             --disable-ipcrm \
             --disable-wall \
             --disable-libmount \
-            --disable-bits \
             --disable-liblastlog2"
 fi
 
 # https://kernelnewbies.org/Linux_4.10
 # https://elixir.bootlin.com/linux/v4.10.17/source/include/uapi/linux/sockios.h
 export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
+
+autoreconf -fiv
 
 ./configure --prefix="${PREFIX}" \
             --disable-chfn-chsh  \
