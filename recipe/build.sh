@@ -18,7 +18,13 @@ export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
 
 # The provided patch updates bits detection
 # but needs to be applied to the source code
-autoreconf -fiv
+# Run autotools manually to skip gtkdocize (gtk-doc not available in conda-forge)
+autopoint --force || true
+aclocal --force -I m4
+libtoolize --copy --force || glibtoolize --copy --force
+autoconf
+autoheader
+automake --add-missing --copy
 
 ./configure --prefix="${PREFIX}" \
             --disable-chfn-chsh  \
