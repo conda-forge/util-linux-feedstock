@@ -16,6 +16,8 @@ fi
 # https://elixir.bootlin.com/linux/v4.10.17/source/include/uapi/linux/sockios.h
 export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
 
+# The provided patch updates bits detection
+# but needs to be applied to the source code
 autoreconf -fiv
 
 ./configure --prefix="${PREFIX}" \
