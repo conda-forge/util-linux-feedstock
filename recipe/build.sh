@@ -9,8 +9,8 @@ if [[ $target_platform == "osx-"* ]]; then
             --disable-ipcrm \
             --disable-wall \
             --disable-libmount \
+            --disable-bits \
             --disable-liblastlog2"
-
 fi
 
 # https://kernelnewbies.org/Linux_4.10
