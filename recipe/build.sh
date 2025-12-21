@@ -19,9 +19,9 @@ export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
 # The provided patch updates bits detection
 # but needs to be applied to the source code
 # Run autotools manually to skip gtkdocize (gtk-doc not available in conda-forge)
-autopoint --force || true
+autopoint --force
 aclocal --force -I m4
-libtoolize --copy --force || glibtoolize --copy --force
+libtoolize --copy --force
 autoconf
 autoheader
 automake --add-missing --copy
