@@ -1,0 +1,44 @@
+From 45f943a4b36f59814cf5a735e4975f2252afac26 Mon Sep 17 00:00:00 2001
+From: Alyssa Ross <hi@alyssa.is>
+Date: Thu, 1 May 2025 09:58:06 +0200
+Subject: [PATCH] bits: only build when cpu_set_t is available
+
+Doesn't build on macOS.
+
+Fixes: 6e1301d59 ("text-utils: add bits command")
+Signed-off-by: Alyssa Ross <hi@alyssa.is>
+---
+ configure.ac | 6 +++++-
+ meson.build  | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 85b64f03be1..68a8f54d923 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2319,7 +2319,11 @@ UL_REQUIRES_HAVE([scriptlive], [pty], [openpty function (libutil)])
+ AM_CONDITIONAL([BUILD_SCRIPTLIVE], [test "x$build_scriptlive" = xyes])
+ 
+ 
+-UL_BUILD_INIT([bits], [yes])
++AC_ARG_ENABLE([bits],
++  AS_HELP_STRING([--disable-bits], [do not build bits]),
++  [], [UL_DEFAULT_ENABLE([bits], [check])])
++UL_BUILD_INIT([bits])
++UL_REQUIRES_HAVE([bits], [cpu_set_t], [cpu_set_t type])
+ AM_CONDITIONAL([BUILD_BITS], [test "x$build_bits" = xyes])
+ 
+ UL_BUILD_INIT([col], [check])
+diff --git a/meson.build b/meson.build
+index 73fc086cc84..441dab8a233 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1261,7 +1261,7 @@ endif
+ 
+ ############################################################
+ 
+-opt = not get_option('build-bits').disabled()
++opt = not get_option('build-bits').require(have_cpu_set_t).disabled()
+ exe = executable(
+   'bits',
+   bits_sources,

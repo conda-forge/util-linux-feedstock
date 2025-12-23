@@ -1,20 +1,18 @@
-{% set name = "util-linux" %}
-{% set version = "2.40.4" %}
+{% set version = "2.41.3" %}
 {% set major_minor = '.'.join(version.split('.')[:2]) %}
 
 package:
-  name: {{ name|lower }}
+  name: util-linux
   version: {{ version }}
 
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
-  sha256: 5c1daf733b04e9859afdc3bd87cc481180ee0f88b5c0946b16fdec931975fb79
+  sha256: 3330d873f0fceb5560b89a7dc14e4f3288bbd880e96903ed9b50ec2b5799e58b
   patches:
-    # https://github.com/util-linux/util-linux/pull/3361
-    - 0000-include-errno_dot_h.patch
-    # https://github.com/util-linux/util-linux/issues/2873
-    # https://github.com/util-linux/util-linux/pull/3013
-    - 0001-This-re-enables-build-on-macOS.patch
+    # While this has been added to the main branch
+    # It hasn't been added to any released branch
+    # https://github.com/util-linux/util-linux/pull/3554
+    - 3554-osx-bits-detection.patch
 
 build:
   number: 0
@@ -33,16 +31,18 @@ requirements:
     - libtool
     - autoconf
     - automake
+    - gettext-tools
     - pkg-config
   host:
     - python
     - zlib
     - ncurses
     - readline
-    - libuuid
+    - libuuid {{ version }}
     - libxcrypt  # [linux]
   run:
     - python
+    - libuuid {{ version }}
 
 test:
   commands:

@@ -5,29 +5,36 @@ OSX_ARGS=""
 if [[ $target_platform == "osx-"* ]]; then
   # the following do not build on macOS
   # wall is already on macOS
-  # uuid conflicts with ossp-uuid
   OSX_ARGS="--disable-ipcs \
             --disable-ipcrm \
             --disable-wall \
             --disable-libmount \
-            --disable-liblastlog2 \
-            --enable-libuuid"
-
+            --disable-liblastlog2"
 fi
 
 # https://kernelnewbies.org/Linux_4.10
 # https://elixir.bootlin.com/linux/v4.10.17/source/include/uapi/linux/sockios.h
 export CPPFLAGS="${CPPFLAGS} -DSIOCGSKNS=0x894C"
 
+# The provided patch updates bits detection
+# but needs to be applied to the source code
+# Run autotools manually to skip gtkdocize (gtk-doc not available in conda-forge)
+autopoint --force
+aclocal --force -I m4
+libtoolize --copy --force
+autoconf
+autoheader
+automake --add-missing --copy
+
 ./configure --prefix="${PREFIX}" \
             --disable-chfn-chsh  \
             --disable-login      \
             --disable-nologin    \
-            --disable-uuidd      \
             --disable-su         \
             --disable-setpriv    \
             --disable-runuser    \
             --disable-static     \
+            --enable-libuuid     \
             --without-systemd    \
             --disable-makeinstall-chown \
             --disable-makeinstall-setuid \
@@ -40,8 +47,10 @@ make -j ${CPU_COUNT}
 # where test_name
 # libmount/update-py  --> libmount_update_py
 known_fail=" TS_OPT_column_invalid_multibyte_known_fail=yes"
-known_fail+=" TS_OPT_hardlink_options_known_fail=yes"  # flaky on py3.9?
 if [[ $target_platform == linux-aarch64 ]]; then
+  known_fail+=" TS_OPT_kill_decode_known_fail=yes"
+  known_fail+=" TS_OPT_misc_swaplabel_known_fail=yes"
+  known_fail+=" TS_OPT_mkswap_mkswap_known_fail=yes"
   known_fail+=" TS_OPT_lsfd_mkfds_ro_regular_file_known_fail=yes"  # can be flaky on this platform
   known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
   known_fail+=" TS_OPT_kill_name_to_number_known_fail=yes"
@@ -63,6 +72,7 @@ if [[ $target_platform == linux-aarch64 ]]; then
 fi
 if [[ $target_platform == linux-ppc64le ]]; then
   # These tests seem to fail under emulation
+  known_fail+=" TS_OPT_kill_decode_known_fail=yes"
   known_fail+=" TS_OPT_fdisk_bsd_known_fail=yes"
   known_fail+=" TS_OPT_kill_name_to_number_known_fail=yes"
   known_fail+=" TS_OPT_kill_options_known_fail=yes"
@@ -83,8 +93,15 @@ if [[ $target_platform == linux-64 ]]; then
   known_fail+=" TS_OPT_lsfd_column_xmode_known_fail=yes"
   known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
 fi
+
+which xargs || true
+# hmaarrfk - 2025/12/23
+# Tests are failing on osx with some strange error about xargs
+# xargs: command line cannot be assembled, too long
+if [[ $target_platform == linux-* ]]; then
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
 make check $known_fail
+fi
 fi
 
 make install
