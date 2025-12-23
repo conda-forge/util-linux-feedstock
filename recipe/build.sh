@@ -47,15 +47,10 @@ make -j ${CPU_COUNT}
 # where test_name
 # libmount/update-py  --> libmount_update_py
 known_fail=" TS_OPT_column_invalid_multibyte_known_fail=yes"
-known_fail+=" TS_OPT_hardlink_options_known_fail=yes"  # flaky on py3.9?
-known_fail+=" TS_OPT_uuid_time_known_fail=yes"  # libuuid version mismatch
-known_fail+=" TS_OPT_uuid_uuidparse_known_fail=yes"  # libuuid version mismatch
-known_fail+=" TS_OPT_uuid_oids_known_fail=yes"  # libuuid version mismatch
-known_fail+=" TS_OPT_uuid_uuidgen_known_fail=yes"  # libuuid version mismatch
-known_fail+=" TS_OPT_kill_decode_known_fail=yes"  # failing on aarch64
-known_fail+=" TS_OPT_misc_swaplabel_known_fail=yes"  # failing on aarch64
-known_fail+=" TS_OPT_mkswap_mkswap_known_fail=yes"  # failing on aarch64
 if [[ $target_platform == linux-aarch64 ]]; then
+  known_fail+=" TS_OPT_kill_decode_known_fail=yes"  # failing on aarch64
+  known_fail+=" TS_OPT_misc_swaplabel_known_fail=yes"  # failing on aarch64
+  known_fail+=" TS_OPT_mkswap_mkswap_known_fail=yes"  # failing on aarch64
   known_fail+=" TS_OPT_lsfd_mkfds_ro_regular_file_known_fail=yes"  # can be flaky on this platform
   known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
   known_fail+=" TS_OPT_kill_name_to_number_known_fail=yes"
