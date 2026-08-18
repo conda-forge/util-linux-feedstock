@@ -88,31 +88,73 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `util-linux` can be installed with `conda`:
+How to use
+----------
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda install util-linux
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba install util-linux
 ```
 
-It is possible to list all of the versions of `util-linux` available on your platform with `conda`:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+# for adding to your local project
+pixi add util-linux
+# for installing globally
+pixi global install util-linux
+```
+
+</details>
+
+Search package versions
+-----------------------
+
+It is possible to list all of the versions of `util-linux` available on your platform:
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda search util-linux --channel conda-forge
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba search util-linux --channel conda-forge
 ```
 
-Alternatively, `mamba repoquery` may provide more information:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+pixi search util-linux --channel conda-forge
+```
+
+</details>
+
+<details>
+<summary>With mamba repoquery, which may provide more information</summary>
 
 ```
 # Search all versions available on your platform:
@@ -124,6 +166,8 @@ mamba repoquery whoneeds util-linux --channel conda-forge
 # List dependencies of `util-linux`:
 mamba repoquery depends util-linux --channel conda-forge
 ```
+
+</details>
 
 
 About conda-forge
