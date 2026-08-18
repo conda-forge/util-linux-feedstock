@@ -1,0 +1,35 @@
+From 12d905457fcac7145ff6eacf389895ed65657593 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Wed, 12 Aug 2026 13:15:47 +0200
+Subject: [PATCH] tests: kill/decode: also strip RT0 from signal mask output
+
+On glibc NPTL systems, signals 32 and 33 are reserved for internal
+use and SIGRTMIN is adjusted to 34 (or 35). The sed filter strips
+these internal signals from the decoded output by their numeric
+values. This works for signals 32 and 33 because print_signal_name()
+renders them as raw numbers (they are below SIGRTMIN). However,
+signal 34 (SIGRTMIN) is rendered as "RT0" because it satisfies the
+SIGRTMIN <= signum condition, so the numeric sed pattern never
+matches.
+
+On older glibc versions (e.g., Ubuntu 18.04, glibc 2.27), NPTL
+leaves SIGRTMIN set in the process signal mask, causing RT0 to
+appear in the output and the test to fail.
+
+Add an explicit sed pattern to also strip RT0.
+---
+ tests/ts/kill/decode | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/ts/kill/decode b/tests/ts/kill/decode
+index 9c7ccb3a43a..f2f5fd42de2 100755
+--- a/tests/ts/kill/decode
++++ b/tests/ts/kill/decode
+@@ -122,6 +122,7 @@ ACK=
+ 		    for ((i=32; i<=SIGRTMIN; i++)); do
+ 			sed_cmd+=" -e s/' $i'//"
+ 		    done
++		    sed_cmd+=" -e s/' RT0'//"
+ 		    eval $sed_cmd
+ 		else
+ 		    cat

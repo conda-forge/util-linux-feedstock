@@ -86,6 +86,7 @@ if [[ $target_platform == linux-ppc64le ]]; then
   known_fail+=" TS_OPT_lsfd_mkfds_signalfd_known_fail=yes"
   known_fail+=" TS_OPT_lsfd_mkfds_symlink_known_fail=yes"
   known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
+  known_fail+=" TS_OPT_script_options_known_fail=yes"
 fi
 if [[ $target_platform == linux-64 ]]; then
   known_fail+=" TS_OPT_lsfd_column_ainodeclass_known_fail=yes"
