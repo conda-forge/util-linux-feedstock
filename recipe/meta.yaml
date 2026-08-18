@@ -10,7 +10,7 @@ source:
   sha256: 82e9158eb12a9b0b569d84e1687fed9dd18fe89ccd8ef5ac3427218a7c0d7f7f
 
 build:
-  number: 0
+  number: 1
   skip: true  # [not unix]
   run_exports:
     - {{ pin_subpackage('util-linux', max_pin='x.x') }}
@@ -19,6 +19,7 @@ requirements:
   build:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - gnuconfig  # [unix]
     - gnuconfig  # [unix]
     - {{ compiler('c') }}
     - {{ stdlib('c') }}
