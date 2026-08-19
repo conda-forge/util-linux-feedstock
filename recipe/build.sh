@@ -27,7 +27,7 @@ autoheader
 automake --add-missing --copy
 
 ./configure --prefix="${PREFIX}" \
-	    --sbindir="${PREFIX}/bin" \
+            --sbindir="${PREFIX}/bin" \
             --disable-chfn-chsh  \
             --disable-login      \
             --disable-nologin    \
