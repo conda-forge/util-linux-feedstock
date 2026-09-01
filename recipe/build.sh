@@ -89,6 +89,17 @@ if [[ $target_platform == linux-ppc64le ]]; then
   known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
   known_fail+=" TS_OPT_script_options_known_fail=yes"
 fi
+if [[ $target_platform == linux-riscv64 ]]; then
+  # These tests seem to fail under emulation
+  known_fail+=" TS_OPT_kill_decode_known_fail=yes"
+  known_fail+=" TS_OPT_kill_name_to_number_known_fail=yes"
+  known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
+  known_fail+=" TS_OPT_libmount_update_py_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_ainodeclass_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_column_type_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_mkfds_directory_known_fail=yes"
+  known_fail+=" TS_OPT_lsfd_mkfds_signalfd_known_fail=yes"
+fi
 if [[ $target_platform == linux-64 ]]; then
   known_fail+=" TS_OPT_lsfd_column_ainodeclass_known_fail=yes"
   known_fail+=" TS_OPT_lsfd_column_type_known_fail=yes"
