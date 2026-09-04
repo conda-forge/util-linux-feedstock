@@ -13,7 +13,7 @@ source:
     - 4554-kill-decode-strip-RT0.patch
 
 build:
-  number: 3
+  number: 4
   skip: true  # [not unix]
   run_exports:
     - {{ pin_subpackage('util-linux', max_pin='x.x') }}
