@@ -105,6 +105,33 @@ if [[ $target_platform == linux-64 ]]; then
   known_fail+=" TS_OPT_lsfd_column_type_known_fail=yes"
   known_fail+=" TS_OPT_lsfd_column_xmode_known_fail=yes"
   known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
+
+  # Python 3.15 rewrote Lib/site.py: a .pth line naming a directory that does
+  # not exist is now reported on stderr instead of being skipped silently.
+  # conda ships conda-site.pth, whose lib/python/site-packages entry only
+  # exists once a `noarch: python` package has been installed, so in this host
+  # environment every interpreter start prints
+  #
+  #   In $PREFIX/lib/python3.15/site-packages/conda-site.pth: \
+  #   $PREFIX/lib/python/site-packages does not exist; skipping sys.path append
+  #
+  # libmount/tabfiles-py diffs the interpreter's stderr against a recorded
+  # fixture, so that single line fails all 11 sub-tests. This is noise from the
+  # conda environment rather than a pylibmount regression: the bindings compile
+  # and import fine, and libmount/update-py, which does not capture stderr,
+  # still passes. The real fix belongs in conda-forge/python-feedstock, so
+  # prefer marking the test known-fail over creating a directory inside
+  # $PREFIX that we would otherwise never ship. linux-aarch64/ppc64le/riscv64
+  # already mark this same test known-fail above.
+  #
+  # This is self-healing: tests/functions.sh only consults known-fail on the
+  # failure path, so the test goes back to reporting OK on its own once the
+  # warning is gone.
+  py_major=${PY_VER:-0.0}; py_major=${py_major%%.*}
+  py_minor=${PY_VER:-0.0}; py_minor=${py_minor#*.}
+  if (( py_major > 3 || (py_major == 3 && py_minor >= 15) )); then
+    known_fail+=" TS_OPT_libmount_tabfiles_py_known_fail=yes"
+  fi
 fi
 
 which xargs || true
