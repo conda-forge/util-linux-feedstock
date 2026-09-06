@@ -8,6 +8,9 @@ package:
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
   sha256: 66ac7c0e725278eb2b039e3104f2c91119341d941b41bac7a285c695f940bd57
+  patches:
+    # https://github.com/util-linux/util-linux/commit/7e2e010874b10b3aabdc3c4c844c9ffc46a4a374
+    - hook_idmap-add-missing-fileutils-include.patch
 
 build:
   number: 0
