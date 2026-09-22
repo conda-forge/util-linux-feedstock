@@ -1,4 +1,4 @@
-{% set version = "2.42.3" %}
+{% set version = "2.42.4" %}
 {% set major_minor = '.'.join(version.split('.')[:2]) %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v{{ major_minor }}/util-linux-{{ version }}.tar.xz
-  sha256: 66ac7c0e725278eb2b039e3104f2c91119341d941b41bac7a285c695f940bd57
+  sha256: fbd62a100ab7bb8746ba0661255c3c48185b1e9021507c624da01fbc696330ec
   patches:
     # https://github.com/util-linux/util-linux/commit/7e2e010874b10b3aabdc3c4c844c9ffc46a4a374
     - hook_idmap-add-missing-fileutils-include.patch
