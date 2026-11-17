@@ -106,6 +106,15 @@ if [[ $target_platform == linux-64 ]]; then
   known_fail+=" TS_OPT_lsfd_column_xmode_known_fail=yes"
   known_fail+=" TS_OPT_lslocks_lslocks_known_fail=yes"
 
+  # script/options [12] size races: with --output-limit, the child sometimes
+  # exits before script notices the limit, so the recorded exit status is 0
+  # instead of 1. Seen intermittently on linux-64 CI (python315t migration,
+  # PR #65) and in 1-CPU VMs by openSUSE. Still open upstream, no fix yet:
+  # https://github.com/util-linux/util-linux/issues/3259
+  # Known-fail is only consulted on failure, so passing runs still report OK.
+  # linux-aarch64/ppc64le already mark this test known-fail above.
+  known_fail+=" TS_OPT_script_options_known_fail=yes"
+
   # Python 3.15 rewrote Lib/site.py: a .pth line naming a directory that does
   # not exist is now reported on stderr instead of being skipped silently.
   # conda ships conda-site.pth, whose lib/python/site-packages entry only
